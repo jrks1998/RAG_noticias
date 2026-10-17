@@ -1,5 +1,23 @@
 @echo off
 echo Setup automático
+
+
+echo [0/6] verificar GPU NVIDIA (CUDA)
+where nvidia-smi >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ERRO] GPU NVIDIA com suporte a CUDA nao detectada. nvidia-smi nao encontrado.
+    echo        Instale o driver NVIDIA ou use uma maquina com GPU compativel.
+    pause
+    exit /b 1
+)
+nvidia-smi >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ERRO] nvidia-smi encontrado, mas falhou ao consultar a GPU. Verifique o driver.
+    pause
+    exit /b 1
+)
+for /f "tokens=*" %%i in ('nvidia-smi --query-gpu=name^,memory.total --format=csv^,noheader') do echo [OK] GPU: %%i
+
 echo [1/6] criar venv
 python -m venv venv
 if %errorlevel% neq 0 (
