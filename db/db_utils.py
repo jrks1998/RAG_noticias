@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, exists
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
 from models.noticia import Base, BronzeNoticia, SilverNoticia, GoldNoticia
@@ -63,3 +63,19 @@ def salvar_noticia_gold(noticia: SilverNoticia):
 def listar_noticias_gold():
     db_session = get_session()
     return db_session.query(GoldNoticia).all()
+
+def listar_noticias_nao_silver():
+    db_session = get_session()
+    return (
+        db_session.query(BronzeNoticia)
+        .filter(~exists().where(SilverNoticia.hash == BronzeNoticia.hash))
+        .all()
+    )
+
+def listar_noticias_nao_gold():
+    db_session = get_session()
+    return (
+        db_session.query(SilverNoticia)
+        .filter(~exists().where(GoldNoticia.hash == SilverNoticia.hash))
+        .all()
+    )
