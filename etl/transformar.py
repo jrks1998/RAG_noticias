@@ -1,6 +1,6 @@
 from models.noticia import BronzeNoticia, SilverNoticia, GoldNoticia
 import re
-from db.db_utils import listar_noticias_bronze, listar_noticias_silver, salvar_noticia_silver, salvar_noticia_gold
+from db.db_utils import listar_noticias_nao_silver, listar_noticias_nao_gold, salvar_noticia_silver, salvar_noticia_gold
 import json
 
 def limpar_materia_bronze(noticia_bronze: BronzeNoticia):
@@ -53,14 +53,14 @@ def converter_para_gold(noticia_silver: SilverNoticia):
     )
 
 def bronze_para_silver():
-    bronze_noticias = listar_noticias_bronze()
+    bronze_noticias = listar_noticias_nao_silver()
     for noticia in bronze_noticias:
         silver = converter_para_silver(noticia)
         if silver != None:
             salvar_noticia_silver(silver)
 
 def silver_para_ouro():
-    silver_noticias = listar_noticias_silver()
+    silver_noticias = listar_noticias_nao_gold()
     for noticia in silver_noticias:
         gold = converter_para_gold(noticia)
         salvar_noticia_gold(gold)
