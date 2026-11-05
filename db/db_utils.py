@@ -2,7 +2,9 @@ from sqlalchemy import create_engine, exists
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
 from models.noticia import Base, BronzeNoticia, SilverNoticia, GoldNoticia
+import os
 
+DATA_DIR = os.getenv('DATA_DIR', 'data')
 engine = create_engine('sqlite:///db/noticias.db')
 Base.metadata.create_all(engine)
 
