@@ -5,7 +5,7 @@ from models.noticia import Base, BronzeNoticia, SilverNoticia, GoldNoticia
 import os
 
 DATA_DIR = os.getenv('DATA_DIR', 'data')
-engine = create_engine('sqlite:///db/noticias.db')
+engine = create_engine(f'sqlite:///{DATA_DIR}/noticias.db')
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind = engine)
