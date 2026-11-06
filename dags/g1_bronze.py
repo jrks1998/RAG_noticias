@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
-from airflow.sdk import dag, task
+from airflow.sdk import dag, task, Asset
 
+NOTICIAS_BRONZE = Asset('sqlite://noticias/bronze')
 FEEDS_G1 = {
     'economia': 'https://g1.globo.com/rss/g1/economia',
     'educacao': 'https://g1.globo.com/rss/g1/educacao',
@@ -11,7 +12,7 @@ FEEDS_G1 = {
 
 @dag(schedule = timedelta(minutes = 3), start_date = datetime(2026, 11, 5), catchup = False, tags = ['rag', 'bronze'])
 def g1_bronze():
-    @task
+    @task(max_active_tis_per_dag = 1, outlets = [NOTICIAS_BRONZE])
     def coletar(categoria: str):
         from scrappers.g1.g1_scrapping_utils import scrapping_criar_lista_salvar_noticias_bronze
         scrapping_criar_lista_salvar_noticias_bronze(FEEDS_G1[categoria], categoria)
