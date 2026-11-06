@@ -83,6 +83,7 @@ x-airflow-common:
     - ./models:/opt/airflow/models
     - ./db:/opt/airflow/db
     - ./data:/opt/airflow/data
+    - ./etl:/opt/airflow/etl
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
